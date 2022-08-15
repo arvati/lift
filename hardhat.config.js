@@ -14,15 +14,18 @@ const INFURA_KEY = process.env.INFURA_KEY;
 module.exports = {
   solidity: "0.8.4",
   networks: {
-    matic: {
+    polygon: {
       url: `https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`,
+      chainId: 137,
       accounts: [`0x${WALLET_PRIVATE_KEY}`]
     },
-    mumbai: {
+    polygonMumbai: {
       url: `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
+      chainId: 80001,
       accounts: [`0x${WALLET_PRIVATE_KEY}`]
     }
   },
+  // npx hardhat verify --list-networks
   etherscan: {
     apiKey: {
         //ethereum
