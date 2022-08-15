@@ -19,14 +19,10 @@ async function main() {
   const Token4 = await ethers.getContractFactory("Tarefa04");
   const token4 = await Token4.deploy();
 
-  //const Token5 = await ethers.getContractFactory("SellerTarefa04");
-  //const token5 = await Token5.deploy();
-
   console.log(`Token address Tarefa 01:, ${token1.address}`);
   console.log(`Token address Tarefa 02:, ${token2.address}`);
   console.log(`Token address Tarefa 03:, ${token3.address}`);
   console.log(`Token address Tarefa 04:, ${token4.address}`);
-  //console.log(`Token address Seller Tarefa 04:, ${token5.address}`);
 }
 
 main()
