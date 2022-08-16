@@ -13,27 +13,12 @@ async function main() {
   console.log(`Deploying contracts with the account:, ${(await ledger.getAddress())}`);
   console.log(`Account balance:, ${(await ledger.getBalance()).toString()}`);
 
-  //const Token1 = await hardhat.ethers.getContractFactory("Tarefa01");
-  //const token1 = await Token1.deploy();
+  const Contract1 = await hardhat.ethers.getContractFactory("Aula");
+  let contractFactory1 = await Contract1.connect(ledger);
+  const contract1 = await contractFactory1.deploy();
+  await contract1.deployed();
 
-  const Token1 = await hardhat.ethers.getContractFactory("Tarefa01");
-  let contractFactory1 = await Token1.connect(ledger);
-  const token1 = await contractFactory1.deploy();
-  await token1.deployed();
-
-  const Token2 = await hardhat.ethers.getContractFactory("Tarefa02");
-  let contractFactory2 = await Token2.connect(ledger);
-  const token2 = await contractFactory2.deploy();
-  await token2.deployed();
-
-  const Token3 = await hardhat.ethers.getContractFactory("Tarefa03");
-  let contractFactory3 = await Token3.connect(ledger);
-  const token3 = await contractFactory3.deploy();
-  await token3.deployed();
-
-  console.log(`Token address Tarefa 01:, ${token1.address}`);
-  console.log(`Token address Tarefa 02:, ${token2.address}`);
-  console.log(`Token address Tarefa 03:, ${token3.address}`);
+  console.log(`Contract address at:, ${contract1.address}`);
 
 }
 
