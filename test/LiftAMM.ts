@@ -1,32 +1,21 @@
-const { expect } = require("chai");
-const hre = require("hardhat");
-const { ethers } = hre;
-const { time, loadFixture } = require("@nomicfoundation/hardhat-network-helpers");
-const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
-
-const { getContractFactory, getAccount } = require("../scripts/helpers");
-
-const  contractLiftAmmName = hre.config.contract[0].name;
-const  contractTokenName = hre.config.contract[1].name;
-
-it("Testing at hardhat network", async () => {
-  expect(hre.network.name).to.equal("hardhat");
-});
+import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
+import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { expect } from "chai";
+import { ethers } from "hardhat";
 
 describe("LiftAMM", function () {
   // We define a fixture to reuse the same setup in every test.
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshot in every test.
   async function deploy() {   
-    const Token = await getContractFactory(contractTokenName, hre);
-    const tokenA = await Token.deploy(hre.config.contract[1].deploy[0].constructor.name, hre.config.contract[1].deploy[0].constructor.symbol);
-    const tokenB = await Token.deploy(hre.config.contract[1].deploy[1].constructor.name, hre.config.contract[1].deploy[1].constructor.symbol);
+    const Token = await ethers.getContractFactory("Token");
+    const tokenA = await Token.deploy("TokenA", "TKA");
+    const tokenB = await Token.deploy("TokenB", "TKB");
 
-    const AMM = await getContractFactory(contractLiftAmmName, hre);
+    const AMM = await ethers.getContractFactory("LiftAMM");
     const amm = await AMM.deploy(tokenA.address, tokenB.address);
-    await amm.deployed();
 
-    const owner = await getAccount(hre);
+    const [owner] = await ethers.getSigners();
 
     return { amm, tokenA, tokenB, owner };
   }

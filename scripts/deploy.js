@@ -1,30 +1,36 @@
-const hardhat = require("hardhat");
-const { LedgerSigner } = require("@anders-t/ethers-ledger");
+const { getContractFactory, getAccount } = require("./helpers");
 
-async function main() {
-  // ledger polygon 1 : `m/44'/60'/0'/0/0`
-  // ledger polygon 2 : `m/44'/60'/1'/0/0`
-  const ledger = new LedgerSigner(hardhat.ethers.provider, `m/44'/60'/1'/0/0`);
+task("check-balance", "Prints out the balance of your account").setAction(async function (taskArguments, hre) {
+	const account = await getAccount(hre)
+	console.log(`Account balance: ${(await account.getBalance()).toString()}`);
+});
 
-  //console.log(ledger);
-  //console.log(await hardhat.ethers.provider.getGasPrice());
-  //console.log(await hardhat.ethers.provider.getFeeData());
-  
-  console.log(`Deploying contracts with the account:, ${(await ledger.getAddress())}`);
-  console.log(`Account balance:, ${(await ledger.getBalance()).toString()}`);
+task("deploy", "Deploys the aula.sol contract").setAction(async function (taskArguments, hre) {
+	console.log(`Network: ${hre.network.name}`);
+	const contractFactory = await getContractFactory(hre.config.contract[0].name, hre);
+	const { tokenA, tokenB } = hre.config.contract[0].deploy[0].constructor;
+	const contract = await contractFactory.deploy( tokenA, tokenB, 
+		{ gasLimit: 10_000_000, gasPrice: ethers.utils.parseUnits('45', 'gwei')});
+	await contract.deployed()
+	console.log(`Contract LiftAMM deployed to address: ${contract.address}`);
+});
 
-  const Contract1 = await hardhat.ethers.getContractFactory("Aula");
-  let contractFactory1 = await Contract1.connect(ledger);
-  const contract1 = await contractFactory1.deploy();
-  await contract1.deployed();
+task("deployA", "Deploys the token.sol contract - tokenA ").setAction(async function (taskArguments, hre) {
+	console.log(`Network: ${hre.network.name}`);
+	const contractFactory = await getContractFactory(hre.config.contract[1].name, hre);
+	const { name, symbol } = hre.config.contract[1].deploy[0].constructor;
+	const contract = await contractFactory.deploy( name, symbol, 
+		{ gasLimit: 10_000_000, gasPrice: ethers.utils.parseUnits('45', 'gwei')});
+	await contract.deployed()
+	console.log(`Contract tokenA deployed to address: ${contract.address}`);
+});
 
-  console.log(`Contract address at:, ${contract1.address}`);
-
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+task("deployB", "Deploys the token.sol contract - tokenA ").setAction(async function (taskArguments, hre) {
+	console.log(`Network: ${hre.network.name}`);
+	const contractFactory = await getLedgerContractFactory(hre.config.contract[1].name, hre);
+	const { name, symbol } = hre.config.contract[1].deploy[1].constructor;
+	const contract = await contractFactory.deploy( name, symbol, 
+		{ gasLimit: 10_000_000, gasPrice: ethers.utils.parseUnits('45', 'gwei')});
+	await contract.deployed()
+	console.log(`Contract tokenB deployed to address: ${contract.address}`);
+});
