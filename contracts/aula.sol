@@ -11,6 +11,12 @@ contract LiftAMM {
 
     address public tokenA;
     address public tokenB;
+
+    modifier ensure(uint deadline) {
+        require(deadline >= block.timestamp, 'Time lock protection : deadline greater then timestamp');
+        _;
+    }
+
     constructor(address _tokenA, address _tokenB)  {  
         tokenA = _tokenA;
         tokenB = _tokenB;   
@@ -60,7 +66,7 @@ contract LiftAMM {
         IERC20(tokenB).transfer(msg.sender, amountB); 
     }
 
-    function swap(address tokenIn, uint256 amountIn, uint minAmountOut) external returns (uint256 amountOut) {
+    function swap(address tokenIn, uint256 amountIn, uint256 minAmountOut, uint deadline) external ensure(deadline) returns (uint256 amountOut) {
         uint256 newBalance;
         require(tokenIn == tokenA || tokenIn == tokenB, "TokenIn not in pool");        
 
@@ -72,7 +78,7 @@ contract LiftAMM {
         if (tokenIn == tokenA) {
             newBalance = k / (balanceA + amountIn);
             amountOut = balanceB - newBalance;
-            require( minAmountOut <= amountOut, "Slippage Protection: Amount less then Minimum requested");
+            require( amountOut >= minAmountOut, "Slippage Protection: Amount less then Minimum requested");
             IERC20(tokenA).transferFrom(msg.sender, address(this), amountIn);            
             IERC20(tokenB).transfer(msg.sender, amountOut);
         }

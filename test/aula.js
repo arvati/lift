@@ -104,7 +104,10 @@ describe("LiftAMM", function () {
       
       const amountIn = ethers.utils.parseEther("1");
       await tokenB.approve(amm.address, amountIn);
-      await amm.swap(tokenB.address, amountIn, 0);
+
+      deadline = 1 + await time.latest();
+
+      await amm.swap(tokenB.address, amountIn, 0, deadline);
 
       const ammTokenABalance = await tokenA.balanceOf(amm.address);
       const amountOut = amountA.sub(ammTokenABalance).toString();
@@ -128,10 +131,37 @@ describe("LiftAMM", function () {
       const amountIn = ethers.utils.parseEther("1");
       await tokenB.approve(amm.address, amountIn);
 
+      deadline = 1 + await time.latest();
+
       await expect(
-        amm.swap(tokenB.address, amountIn, ethers.utils.parseUnits("99000", 12) )
+        amm.swap(tokenB.address, amountIn, ethers.utils.parseUnits("99000", 12), deadline )
       ).to.be.revertedWith("Slippage Protection: Amount less then Minimum requested");  
     });
+
+    it("Proteção de time lock (deadline)", async function () {
+      const { amm, tokenA, tokenB, owner } = await loadFixture(deploy);
+
+      // Add liquidity
+      const amountA = ethers.utils.parseEther("1");
+      const amountB = ethers.utils.parseEther("10");
+
+      await tokenA.approve(amm.address, amountA);
+      await tokenB.approve(amm.address, amountB);
+      await amm.addLiquidity(amountA, amountB);  
+      
+      // Swap
+      
+      const amountIn = ethers.utils.parseEther("1");
+      await tokenB.approve(amm.address, amountIn);
+
+      deadline = 1 + await time.latest();
+
+      await time.increase(1);
+
+      await expect(
+        amm.swap(tokenB.address, amountIn, 0, deadline)
+      ).to.be.revertedWith("Time lock protection : deadline greater then timestamp");  
+    });    
 
   });
 });

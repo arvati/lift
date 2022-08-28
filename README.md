@@ -19,4 +19,7 @@ Qual o endereço da sua carteira na polygon?
 Qual o endereço do contrato deployado? 
 
 
-Outros conteúdos: https://github.com/ffatique/lift-learning-aula07
+Outros conteúdos: 
+
+https://github.com/ffatique/lift-learning-aula07
+https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol
