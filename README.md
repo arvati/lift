@@ -23,3 +23,6 @@ Outros conteúdos:
 
 https://github.com/ffatique/lift-learning-aula07
 https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol
+
+https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2LiquidityMathLibrary.sol
+https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2Library.sol

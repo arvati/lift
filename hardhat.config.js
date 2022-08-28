@@ -120,7 +120,10 @@ module.exports = {
     path: 1,
     connect : false 
   },
-  log: false,
+  extra: {
+    log: false,
+    testNetwork: "hardhat"
+  },
   contract: [
     { name: "LiftAMM",
       deploy: [ {
@@ -129,6 +132,7 @@ module.exports = {
           name: "Lift aula 7 - AMM",
           tokenA: "0x00",
           tokenB: "0x00",
+          fee: 3
         },
         networks: {
           polygon: "0x00",

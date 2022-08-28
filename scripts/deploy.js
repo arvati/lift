@@ -8,8 +8,8 @@ task("check-balance", "Prints out the balance of your account").setAction(async 
 task("deploy", "Deploys the aula.sol contract").setAction(async function (taskArguments, hre) {
 	console.log(`Network: ${hre.network.name}`);
 	const contractFactory = await getContractFactory(hre.config.contract[0].name, hre);
-	const { tokenA, tokenB } = hre.config.contract[0].deploy[0].constructor;
-	const contract = await contractFactory.deploy( tokenA, tokenB, 
+	const { tokenA, tokenB, fee } = hre.config.contract[0].deploy[0].constructor;
+	const contract = await contractFactory.deploy( tokenA, tokenB, fee,  
 		{ gasLimit: 10_000_000, gasPrice: ethers.utils.parseUnits('45', 'gwei')});
 	await contract.deployed()
 	console.log(`Contract LiftAMM deployed to address: ${contract.address}`);

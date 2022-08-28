@@ -28,7 +28,7 @@ async function getAccount(hre) {
 }
 
 function log(hre, msg) {
-    if (hre.config.log) console.log(msg);
+    if (hre.config.extra.log) console.log(msg);
 }
 
 async function getContractFactory(contractName, hre) {
