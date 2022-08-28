@@ -4,27 +4,21 @@ pragma solidity ^0.8.9;
 // Import this file to use console.log
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 import "contracts/helpers.sol";
 
-contract LiftAMM { 
-
-    error InsufficientInputAmount();
-    error InvalidK();
-
-    uint256 public totalSupply;
-    uint256 public fee;
-    mapping(address => uint256) public balance; 
-
+contract LiftAMM is ERC20 { 
     address public tokenA;
     address public tokenB;
+    uint256 public fee;
 
     modifier ensure(uint deadline) {
         require(deadline >= block.timestamp, 'Time lock protection : deadline greater then timestamp');
         _;
     }
 
-    constructor(address _tokenA, address _tokenB, uint256 _fee)  {
+    constructor(string memory name_, string memory symbol_, address _tokenA, address _tokenB, uint256 _fee) ERC20(name_, symbol_) {
         require(_tokenA != _tokenB, 'Must be different addressess');  
         tokenA = _tokenA;
         tokenB = _tokenB;   
@@ -46,29 +40,24 @@ contract LiftAMM {
         IERC20(tokenA).transferFrom(msg.sender, address(this), amountA);
         IERC20(tokenB).transferFrom(msg.sender, address(this), amountB);
 
-        //uint256 balanceA = IERC20(tokenA).balanceOf(address(this));
-        //uint256 balanceB = IERC20(tokenB).balanceOf(address(this));
         (uint256 balanceA, uint256 balanceB) = AmmLibrary.getReserves(tokenA,tokenB);
 
-        require(totalSupply * amountA / balanceA == totalSupply * amountB / balanceB, "Wrong proportion between asset A and B");
+        require(totalSupply() * amountA / balanceA == totalSupply() * amountB / balanceB, "Wrong proportion between asset A and B");
 
         liquidity = AmmLibrary.squareRoot(amountA * amountB);
-        totalSupply += liquidity;
-        balance[msg.sender] += liquidity;        
+        _mint(msg.sender, liquidity);        
     }
 
     function removeLiquidity(uint256 liquidity) external returns (uint256 amountA, uint256 amountB) {   
-        require(totalSupply >= liquidity && balance[msg.sender] >= liquidity, "Not enough liquidity for this, amount too big"); 
+        require(balanceOf(msg.sender) >= liquidity, "Not enough liquidity for this, amount too big"); 
         
         (uint256 balanceA, uint256 balanceB) = AmmLibrary.getReserves(tokenA,tokenB);        
 
-        uint divisor = totalSupply / liquidity;
-        amountA = balanceA / divisor;
-        amountB = balanceB / divisor;
+        uint denominator = totalSupply() / liquidity;
+        amountA = balanceA / denominator;
+        amountB = balanceB / denominator;
 
-        totalSupply -= liquidity;
-        balance[msg.sender] -= liquidity;  
-
+        _burn(msg.sender, liquidity);
         IERC20(tokenA).transfer(msg.sender, amountA);
         IERC20(tokenB).transfer(msg.sender, amountB); 
     }

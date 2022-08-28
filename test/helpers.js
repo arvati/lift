@@ -32,7 +32,7 @@ var getAmountOut = function (amountIn, reserveIn, reserveOut, fee) {
 	amountInWithFee = BigInt(amountIn) * (BigInt("1000") - BigInt(fee) );
 	numerator = BigInt(amountInWithFee) * BigInt(reserveOut);
 	denominator = (BigInt(reserveIn) * BigInt(1000)) + BigInt(amountInWithFee);
-	return BigInt(numerator) / BigInt(denominator); + BigInt(1) ;
+	return BigInt(numerator) / BigInt(denominator); // + BigInt(1) ;
 }
 
 // 1 fee = 0.1%

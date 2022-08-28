@@ -20,12 +20,15 @@ describe("Lift AMM", function () {
   // and reset Hardhat Network to that snapshot in every test.
   async function deploy() {   
     const Token = await getContractFactory(contractTokenName, hre);
-    const tokenA = await Token.deploy(hre.config.contract[1].deploy[0].constructor.name, hre.config.contract[1].deploy[0].constructor.symbol);
-    const tokenB = await Token.deploy(hre.config.contract[1].deploy[1].constructor.name, hre.config.contract[1].deploy[1].constructor.symbol);
+    const {name: nameA, symbol: symbolA} = hre.config.contract[1].deploy[0].constructor
+    const tokenA = await Token.deploy(nameA, symbolA);
+    const {name: nameB, symbol: symbolB} = hre.config.contract[1].deploy[1].constructor
+    const tokenB = await Token.deploy(nameB, symbolB);
 
     const AMM = await getContractFactory(contractLiftAmmName, hre);
     const fee =  0 // hre.config.contract[0].deploy[0].constructor.fee;
-    const amm = await AMM.deploy(tokenA.address, tokenB.address, fee);
+    const {name, symbol} = hre.config.contract[0].deploy[0].constructor
+    const amm = await AMM.deploy(name, symbol, tokenA.address, tokenB.address, fee);
     await amm.deployed();
 
     const owner = await getAccount(hre);
@@ -63,7 +66,7 @@ describe("Lift AMM", function () {
       //const ammTokenBBalance = await tokenB.balanceOf(amm.address);  
       const {0: ammTokenABalance , 1: ammTokenBBalance} = await amm.getBalances();
       
-      const ammLiquidity = await amm.balance(owner.address);
+      const ammLiquidity = await amm.balanceOf(owner.address);
 
       expect(ammTokenABalance).to.equal(amountA);
       expect(ammTokenBBalance).to.equal(amountB);
@@ -82,7 +85,7 @@ describe("Lift AMM", function () {
       //const ammTokenBBalance = await tokenB.balanceOf(amm.address);  
       const {0: ammTokenABalance , 1: ammTokenBBalance} = await amm.getBalances();
       
-      const ammLiquidity = await amm.balance(owner.address);
+      const ammLiquidity = await amm.balanceOf(owner.address);
       expect(ammTokenABalance).to.equal(amountA);
       expect(ammTokenBBalance).to.equal(amountB);
 
@@ -104,13 +107,13 @@ describe("Lift AMM", function () {
 
       // Add liquidity
       await amm.addLiquidity(amountA, amountB);    
-      const liquidity = await amm.balance(owner.address);
+      const liquidity = await amm.balanceOf(owner.address);
 
       // Remove liquidity
       await amm.removeLiquidity(liquidity);
    
       const {0: ammTokenABalance , 1: ammTokenBBalance} = await amm.getBalances();
-      const liquidityAfter = await amm.balance(owner.address);     
+      const liquidityAfter = await amm.balanceOf(owner.address);     
 
       expect(ammTokenABalance).to.equal(0);
       expect(ammTokenBBalance).to.equal(0);
@@ -122,13 +125,13 @@ describe("Lift AMM", function () {
 
       // Add liquidity
       await amm.addLiquidity(amountA, amountB);    
-      const liquidity = await amm.balance(owner.address);
+      const liquidity = await amm.balanceOf(owner.address);
 
       // Remove liquidity
       await amm.removeLiquidity(liquidity.div(3));
    
       const {0: ammTokenABalance , 1: ammTokenBBalance} = await amm.getBalances();
-      const liquidityAfter = await amm.balance(owner.address);     
+      const liquidityAfter = await amm.balanceOf(owner.address);     
 
       expect(ammTokenABalance).to.equal(amountA.sub(amountA.div(3)));
       expect(ammTokenBBalance).to.equal(amountB.sub(amountB.div(3)));
