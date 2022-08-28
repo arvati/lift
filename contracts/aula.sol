@@ -60,7 +60,7 @@ contract LiftAMM {
         IERC20(tokenB).transfer(msg.sender, amountB); 
     }
 
-    function swap(address tokenIn, uint256 amountIn) external returns (uint256 amountOut) {
+    function swap(address tokenIn, uint256 amountIn, uint minAmountOut) external returns (uint256 amountOut) {
         uint256 newBalance;
         require(tokenIn == tokenA || tokenIn == tokenB, "TokenIn not in pool");        
 
@@ -70,15 +70,17 @@ contract LiftAMM {
         uint256 k = balanceA * balanceB; // K = X * Y   
 
         if (tokenIn == tokenA) {
-            IERC20(tokenA).transferFrom(msg.sender, address(this), amountIn);
             newBalance = k / (balanceA + amountIn);
-            amountOut = balanceB - newBalance;            
+            amountOut = balanceB - newBalance;
+            require( minAmountOut <= amountOut, "Slippage Protection: Amount less then Minimum requested");
+            IERC20(tokenA).transferFrom(msg.sender, address(this), amountIn);            
             IERC20(tokenB).transfer(msg.sender, amountOut);
         }
         else {
-            IERC20(tokenB).transferFrom(msg.sender, address(this), amountIn);
             newBalance = k / (balanceB + amountIn);
             amountOut = balanceA - newBalance;
+            require( minAmountOut <= amountOut, "Slippage Protection: Amount less then Minimum requested");
+            IERC20(tokenB).transferFrom(msg.sender, address(this), amountIn);
             IERC20(tokenA).transfer(msg.sender, amountOut);
         }      
     }

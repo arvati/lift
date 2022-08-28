@@ -104,12 +104,34 @@ describe("LiftAMM", function () {
       
       const amountIn = ethers.utils.parseEther("1");
       await tokenB.approve(amm.address, amountIn);
-      await amm.swap(tokenB.address, amountIn);
+      await amm.swap(tokenB.address, amountIn, 0);
 
       const ammTokenABalance = await tokenA.balanceOf(amm.address);
       const amountOut = amountA.sub(ammTokenABalance).toString();
 
       expect(amountOut).to.equal("90909090909090910");      
     });
+
+    it("Proteção de slippage (minAmountOut)", async function () {
+      const { amm, tokenA, tokenB, owner } = await loadFixture(deploy);
+
+      // Add liquidity
+      const amountA = ethers.utils.parseEther("1");
+      const amountB = ethers.utils.parseEther("10");
+
+      await tokenA.approve(amm.address, amountA);
+      await tokenB.approve(amm.address, amountB);
+      await amm.addLiquidity(amountA, amountB);  
+      
+      // Swap
+      
+      const amountIn = ethers.utils.parseEther("1");
+      await tokenB.approve(amm.address, amountIn);
+
+      await expect(
+        amm.swap(tokenB.address, amountIn, ethers.utils.parseUnits("99000", 12) )
+      ).to.be.revertedWith("Slippage Protection: Amount less then Minimum requested");  
+    });
+
   });
 });
