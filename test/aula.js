@@ -216,7 +216,7 @@ describe("Lift AMM", function () {
 
       await expect(
         amm.swap(tokenB.address, amountIn, 0, deadline)
-      ).to.be.revertedWith("Time lock protection : deadline greater then timestamp");  
+      ).to.be.revertedWith("Time lock protection : timestamp greater then deadline");  
     });    
   });
   
