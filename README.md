@@ -20,9 +20,22 @@ Qual o endereço do contrato deployado?
 
 
 Outros conteúdos: 
-
 https://github.com/ffatique/lift-learning-aula07
 https://github.com/Uniswap/v2-periphery/blob/master/contracts/UniswapV2Router02.sol
 
 https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2LiquidityMathLibrary.sol
 https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2Library.sol
+
+
+Hardhat with Remix IDE and HardHat Node
+Execute os comandos na raiz do repositório em dois terminais diferentes
+Abra o Remix IDE: https://remix.ethereum.org/
+
+```
+npx remixd --remix-ide https://remix.ethereum.org
+```
+
+```
+npx hardhat node
+```
+

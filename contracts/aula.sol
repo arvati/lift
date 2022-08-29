@@ -14,7 +14,8 @@ contract LiftAMM is ERC20 {
     uint256 public fee;
 
     modifier ensure(uint deadline) {
-        require(deadline >= block.timestamp, 'Time lock protection : deadline greater then timestamp');
+        // deadline zero para desligar a proteção timelock
+        require(deadline == 0 || deadline >= block.timestamp, 'Time lock protection : timestamp greater then deadline');
         _;
     }
 
@@ -28,6 +29,10 @@ contract LiftAMM is ERC20 {
     function setFee(uint256 _fee) external {
         require(fee == 0, "May be changed only once");
         fee = _fee;
+    }
+
+    function getTimeStamp() external view returns (uint256) {
+        return block.timestamp;
     }
 
     function getBalances() external view returns (uint256 balanceA, uint256 balanceB) {

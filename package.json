@@ -13,17 +13,19 @@
   ],
   "devDependencies": {
     "@anders-t/ethers-ledger": "^1.0.4",
+    "@cronos-labs/hardhat-cronoscan": "^0.0.4",
     "@nomicfoundation/hardhat-chai-matchers": "^1.0.3",
-    "@nomicfoundation/hardhat-network-helpers": "^1.0.4" ,
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.4",
     "@nomicfoundation/hardhat-toolbox": "^1.0.2",
     "@nomiclabs/hardhat-ethers": "^2.1.1",
     "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "@openzeppelin/contracts": "^4.7.3",
-    "@cronos-labs/hardhat-cronoscan": "^0.0.4",
-    "hardhat-gas-reporter": "^1.0.8",
     "chai": "^4.3.6",
     "dotenv": "^16.0.1",
-    "hardhat": "^2.10.2"
+    "hardhat": "^2.10.2",
+    "hardhat-gas-reporter": "^1.0.8",
+    "@remix-project/remixd": "^0.6.5"
   },
-  "dependencies": {}
+  "dependencies": {
+  }
 }
