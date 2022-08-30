@@ -31,17 +31,26 @@ function log(hre, msg) {
     if (hre.config.extra.log) console.log(msg);
 }
 
-async function getContractFactory(contractName, hre) {
+async function getContractFactory(contractName, hre, _signer) {
+    const signer = (typeof _signer !== 'undefined') ? _signer : await getAccount(hre);
     const myContractFactory = await ethers.getContractFactory(contractName);
-    const signer = await getAccount(hre)
     log(hre, `Using contract: ${contractName}`);
     return await myContractFactory.connect(signer);
 }
 
-async function getContract(contractName, contractAddress, hre) {
-    let myContract = await getContractFactory(contractName, hre);
+async function getContract(contractName, contractAddress, hre, _signer) {
+    const signer = (typeof _signer !== 'undefined') ? _signer : await getAccount(hre);
+    let myContract = await getContractFactory(contractName, hre, signer);
     log(hre,`Using contract address: ${contractAddress}`);
     return myContract.attach(contractAddress);
+}
+
+function contructorArgs(constructor) {
+    var args = [];
+    for (const arg in constructor) {
+        if (constructor.hasOwnProperty(arg)) args.push(constructor[arg]);
+    }
+    return args;
 }
 
 
@@ -50,4 +59,6 @@ module.exports = {
 	getAccount,
     getContractFactory,
 	getContract,
+    logger : log,
+    contructorArgs
 }

@@ -4,13 +4,16 @@ require("@nomicfoundation/hardhat-toolbox");
 require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-ethers");
 require("@nomicfoundation/hardhat-chai-matchers");
+require("@cronos-labs/hardhat-cronoscan");
 
 require('dotenv').config();
 
 // Hardhat custom tasks
-require("./scripts/deploy.js");
+require("./scripts/deploy_task.js");
 
-const { WALLET_PRIVATE_KEY, POLYGONSCAN_API_KEY, BSCSCAN_API_KEY, HARMONY_API_KEY, CRONOSCAN_API_KEY, ETHERSCAN_API_KEY, INFURA_KEY, ALCHEMY_KEY } = process.env;
+const { WALLET_PRIVATE_KEY } = process.env;
+const { POLYGONSCAN_API_KEY, BSCSCAN_API_KEY, HARMONY_API_KEY, CRONOSCAN_API_KEY, ETHERSCAN_API_KEY } = process.env;
+const { INFURA_KEY, ALCHEMY_KEY, MATICVIGIL_KEY } = process.env;
 
 module.exports = {
   solidity: {
@@ -43,7 +46,7 @@ module.exports = {
       //url: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`
       //url: `https://polygon-mainnet.infura.io/v3/${INFURA_KEY}`,
       //url: "https://polygon-rpc.com",
-      url: 'https://rpc-mainnet.maticvigil.com',
+      url: `https://rpc-mainnet.maticvigil.com/v1/${MATICVIGIL_KEY}`,
       chainId: 137,
       gasMultiplier: 10,
       gasPrice: 35000000000,
@@ -53,7 +56,7 @@ module.exports = {
     polygonMumbai: {
       //url: `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_KEY}`
       //url: `https://polygon-mumbai.infura.io/v3/${INFURA_KEY}`,
-      url: "https://rpc-mumbai.maticvigil.com",
+      url: `https://rpc-mumbai.maticvigil.com/v1/${MATICVIGIL_KEY}`,
       chainId: 80001,
       gasMultiplier: 10,
       gasPrice: 35000000000,
@@ -118,25 +121,25 @@ module.exports = {
   },
   ledger: {
     path: 1,
-    connect : false 
+    connect : true 
   },
   extra: {
-    log: false,
+    log: true,
     testNetwork: "hardhat"
   },
   contract: [
     { name: "LiftAMM",
       deploy: [ {
         constructor: {
-          symbol: "LiftAMM",
           name: "Lift aula 7 - AMM",
-          tokenA: "0x00",
-          tokenB: "0x00",
+          symbol: "LiftAMM",
+          tokenA: "0xFf95A425ee5069e6a17761567e943DFb6F2B2F82",
+          tokenB: "0x28c4E5d0a4E34a19756333f191d70bED3E7c89e1",
           fee: 3
         },
         networks: {
-          polygon: "0x00",
-          polygonMumbai: "0x00"
+          polygon: "",
+          polygonMumbai: "0xECe7C80215c3BC0906e1b83b979B5e835ade322f"
         }
       },
       ]
@@ -144,23 +147,23 @@ module.exports = {
     { name: "Token",
       deploy: [ {
         constructor: {
+          name: "Token A",
           symbol: "A",
-          name: "Token A"
         },
         networks: {
-          polygon: "0x00",
-          polygonMumbai: "0x00"
+          polygon: "",
+          polygonMumbai: "0xFf95A425ee5069e6a17761567e943DFb6F2B2F82"
         }
       }, {
         constructor: {
+          name: "Token B",
           symbol: "B",
-          name: "Token B"
         },
         networks: {
-          polygon: "0x00",
-          polygonMumbai: "0x00"
+          polygon: "",
+          polygonMumbai: "0x28c4E5d0a4E34a19756333f191d70bED3E7c89e1"
         }
-      },
+      }
       ]
     },
   ]

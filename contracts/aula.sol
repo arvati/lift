@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.9;
 
 // Import this file to use console.log
@@ -30,8 +30,8 @@ contract LiftAMM is ERC20 {
         fee = _fee;
     }
 
-    function getTimeStamp() external view returns (uint256) {
-        return block.timestamp;
+    function getDeadline(uint _minutes) external view returns (uint) {
+        return block.timestamp + _minutes * (1 minutes);
     }
 
     function getBalances() external view returns (uint256 balanceA, uint256 balanceB) {

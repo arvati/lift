@@ -15,8 +15,10 @@ Use esse repositório de ponto de partida: https://github.com/joaoavf/amm
 Um bom recurso é o repositório da UniswapV2: https://github.com/Uniswap/v2-core/tree/master/contracts 
 
 Qual o endereço da sua carteira na polygon?
+https://mumbai.polygonscan.com/address/0xff2416ac6d95ee66fa095453531970291a3651a6
 
 Qual o endereço do contrato deployado? 
+https://mumbai.polygonscan.com/address/0xECe7C80215c3BC0906e1b83b979B5e835ade322f#code
 
 
 Outros conteúdos: 
@@ -39,3 +41,21 @@ npx remixd --remix-ide https://remix.ethereum.org
 npx hardhat node
 ```
 
+Mumbai Deploy
+```
+npx hardhat compile
+npx hardhat run scripts/deploy.js --network polygonMumbai
+```
+
+```
+npx hardhat verify --network polygonMumbai 0xFf95A425ee5069e6a17761567e943DFb6F2B2F82 --contract contracts/token.sol:Token "Token A" "A"
+
+npx hardhat verify --network polygonMumbai 0x28c4E5d0a4E34a19756333f191d70bED3E7c89e1 --contract contracts/token.sol:Token "Token B" "B"
+
+npx hardhat verify --network polygonMumbai 0xECe7C80215c3BC0906e1b83b979B5e835ade322f --contract contracts/aula.sol:LiftAMM "Lift aula 7 - AMM" "LiftAMM" "0xFf95A425ee5069e6a17761567e943DFb6F2B2F82" "0x28c4E5d0a4E34a19756333f191d70bED3E7c89e1" "3"
+```
+
+Successfully verified contract LiftAMM on Etherscan.
+https://mumbai.polygonscan.com/address/0xFf95A425ee5069e6a17761567e943DFb6F2B2F82#code
+https://mumbai.polygonscan.com/address/0x28c4E5d0a4E34a19756333f191d70bED3E7c89e1#code
+https://mumbai.polygonscan.com/address/0xECe7C80215c3BC0906e1b83b979B5e835ade322f#code
