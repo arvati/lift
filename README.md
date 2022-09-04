@@ -7,7 +7,12 @@ Exemplo: https://docs.google.com/spreadsheets/d/1pD4zp6LEZCW1Hs_drJTtP6fiRgLoKNh
 
 Use esse repositório de ponto de partida: https://github.com/joaoavf/amm
 
-https://forms.gle/sCEc37tVxf2g2bcq8
+Exercício de Programação: https://forms.gle/sCEc37tVxf2g2bcq8
+
+
+Exercício (não-programadores): https://forms.gle/FtA8QMucmskBB9D19
+
+
 1. Adicione proteção de slippage (minAmountOut)
 2. Adicione o time lock (deadline)
 3. Adicione a fee (0.3%) para os provedores de liquidez
