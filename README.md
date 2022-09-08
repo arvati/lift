@@ -15,7 +15,7 @@ git push -u origin <new branch>
 
 Copiar arquivos de outro git (use git-bash):
 ```
-git clone --git-dir=/dev/null --depth 1 -b <branch> <repo_url> .
+git --git-dir=/dev/null clone --depth 1 -b <branch> <repo_url> .
 ```
 
 Copiando de repositórios compativeis:
