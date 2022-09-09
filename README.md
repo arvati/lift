@@ -1,24 +1,6 @@
 # Aulas Lift
 
-Cada aula é salva em um branch separado
+Este branch precisa do docker instalado na máquina e extenões de Remote Containers
+Download com: 
+git clone --depth 1 -b Aula-9 git@github.com:arvati/lift.git
 
-
-Para criar um branch limpo usar os comandos no terminal (git version > 2.27):
-```
-git switch --orphan <new branch>
-```
-Crie o arquivo .gitignore com o minimo necessário e depois:
-```
-git commit --allow-empty -m "Initial commit on orphan branch"
-git push -u origin <new branch>
-```
-
-Copiar arquivos de outro git (use git-bash):
-```
-git --git-dir=/dev/null clone --depth 1 -b <branch> <repo_url> .
-```
-
-Copiando de repositórios compativeis:
-```
-git archive --remote=<repository URL> <branch> | tar -t
-```
