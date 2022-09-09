@@ -8,17 +8,29 @@
 	},
 
 	// Set *default* container specific settings.json values on container create.
-	//"settings": {},
+	"settings": {
+		"solidity.packageDefaultDependenciesContractsDirectory": "src",
+		"solidity.packageDefaultDependenciesDirectory": "lib",
+		"solidity.compileUsingRemoteVersion": "v0.8.13",
+		"solidity.enabledAsYouTypeCompilationErrorCheck": true,
+		"solidity.validationDelay": 1500,
+		"solidity.linter": "solhint",
+		"solidity.solhintRules": {
+  			"avoid-sha3": "warn"
+		}
+	},
 
 	// Add the IDs of extensions you want installed when the container is created.
-	//"extensions": [	],
+	"extensions": [
+		"JuanBlanco.solidity"
+	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	//"forwardPorts": [8000],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "pip3 install --user -r requirements.txt",
-	//"postCreateCommand": "echo 'done'",
+	"postCreateCommand": "forge --version; cast --version; anvil --version",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode"
