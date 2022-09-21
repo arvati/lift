@@ -2,10 +2,10 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.182.0/containers/jupyter-datascience-notebooks
 {
 	"name": "Foundry (arvati)",
-	//"image": "arvati/devcontainer:debian_miniconda3",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
+	"image": "arvati/devcontainer:debian_solidity",
+	//"build": {
+	//	"dockerfile": "Dockerfile"
+	//},
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {
