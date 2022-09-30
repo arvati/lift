@@ -61,7 +61,6 @@ contract PutTokenAcucar is ERC20 {
             // envio o colateral original
             strikeContract.transfer(msg.sender, quantidadeCriada * strikePrice);
         }
-         
          // SE O COMPRADOR NAO EXERCEU => ENVIAR O COLATERAL QUE TINHA SIDO TRANCADO
          // SE O COMPRADOR EXERCEU => ENVIAR O ACUCAR COIN QUE O COMPRADOR VENDEU 
 
